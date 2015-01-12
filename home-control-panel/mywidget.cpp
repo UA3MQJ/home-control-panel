@@ -7,11 +7,11 @@ MyWidget::MyWidget(QWidget *parent) :
     ui(new Ui::MyWidget)
 {
     ui->setupUi(this);
-    QObject::connect(ui->pushButton_2,SIGNAL(clicked()),ui->graph,SLOT(on_pushButton_2_clicked()));
-    QObject::connect(ui->pushButton_3,SIGNAL(clicked()),ui->graph,SLOT(on_pushButton_3_clicked()));
-    QObject::connect(ui->pushButton_4,SIGNAL(clicked()),ui->graph,SLOT(on_pushButton_4_clicked()));
-    QObject::connect(ui->dial,SIGNAL(valueChanged()),ui->graph,SLOT(on_dial_valueChanged()));
-    QObject::connect(ui->dial,SIGNAL(valueChanged()),ui->graph,SLOT(on_pushButton_2_clicked()));
+    //QObject::connect(ui->pushButton_2,SIGNAL(clicked()),ui->graph,SLOT(on_pushButton_2_clicked()));
+    //QObject::connect(ui->pushButton_3,SIGNAL(clicked()),ui->graph,SLOT(on_pushButton_3_clicked()));
+    //QObject::connect(ui->pushButton_4,SIGNAL(clicked()),ui->graph,SLOT(on_pushButton_4_clicked()));
+    //QObject::connect(ui->dial,SIGNAL(valueChanged()),ui->graph,SLOT(on_dial_valueChanged()));
+    //QObject::connect(ui->dial,SIGNAL(valueChanged()),ui->graph,SLOT(on_pushButton_2_clicked()));
 }
 
 MyWidget::~MyWidget()
