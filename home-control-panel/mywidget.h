@@ -17,13 +17,10 @@ public:
     QVector<double> x,y,x_red,y_red; //Инициализируем четыре вектора
 
 private slots:
-    void on_pushButton_2_clicked();
-
-    void on_pushButton_3_clicked();
-
-    void on_pushButton_4_clicked();
-
-    void on_dial_valueChanged();
+    void onPushButton_2_clicked();
+    void onPushButton_3_clicked();
+    void onPushButton_4_clicked();
+    void onDial_valueChanged();
 
 private:
     Ui::MyWidget *ui;

@@ -7,11 +7,11 @@ MyWidget::MyWidget(QWidget *parent) :
     ui(new Ui::MyWidget)
 {
     ui->setupUi(this);
-    //QObject::connect(ui->pushButton_2,SIGNAL(clicked()),ui->graph,SLOT(on_pushButton_2_clicked()));
-    //QObject::connect(ui->pushButton_3,SIGNAL(clicked()),ui->graph,SLOT(on_pushButton_3_clicked()));
-    //QObject::connect(ui->pushButton_4,SIGNAL(clicked()),ui->graph,SLOT(on_pushButton_4_clicked()));
-    //QObject::connect(ui->dial,SIGNAL(valueChanged()),ui->graph,SLOT(on_dial_valueChanged()));
-    //QObject::connect(ui->dial,SIGNAL(valueChanged()),ui->graph,SLOT(on_pushButton_2_clicked()));
+    connect(ui->pushButton_2,SIGNAL(clicked()),SLOT(onPushButton_2_clicked()));
+    connect(ui->pushButton_3,SIGNAL(clicked()),SLOT(onPushButton_3_clicked()));
+    connect(ui->pushButton_4,SIGNAL(clicked()),SLOT(onPushButton_4_clicked()));
+    connect(ui->dial,SIGNAL(valueChanged()),SLOT(on_dial_valueChanged()));
+    connect(ui->dial,SIGNAL(valueChanged()),SLOT(on_pushButton_2_clicked()));
 }
 
 MyWidget::~MyWidget()
@@ -19,8 +19,9 @@ MyWidget::~MyWidget()
     delete ui;
 }
 
+
 //Слот для создания графика при нажатии на кнопку
-void MyWidget::on_pushButton_2_clicked()
+void MyWidget::onPushButton_2_clicked()
 {
     //generate some data
 
@@ -43,14 +44,14 @@ void MyWidget::on_pushButton_2_clicked()
     ui->graph->addGraph();
     ui->graph->graph(0)->setData(x,y);
     number_graph=number_graph+1;
-    /*if(shet!=0){
-        ui->graph->addGraph();
-        ui->graph->graph(1)->setData(x_red,y_red);
-        ui->graph->graph(1)->setPen(QPen(Qt::red));
-        //ui->graph->graph(1)->setPen(QColor(50,50,50,255));
-        //ui->graph->graph(1)->setLineStyle(QCPGraph::lsNone);
-        //ui->graph->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle,4));
-    }*/
+    //if(shet!=0){
+    //    ui->graph->addGraph();
+    //    ui->graph->graph(1)->setData(x_red,y_red);
+    //    ui->graph->graph(1)->setPen(QPen(Qt::red));
+    //    //ui->graph->graph(1)->setPen(QColor(50,50,50,255));
+    //    //ui->graph->graph(1)->setLineStyle(QCPGraph::lsNone);
+    //    //ui->graph->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle,4));
+    //}
 
        //помещаем метки на оси
     ui->graph->xAxis->setLabel("x");
@@ -64,7 +65,7 @@ void MyWidget::on_pushButton_2_clicked()
     ui->graph->replot();
 }
 
-void MyWidget::on_pushButton_3_clicked()
+void MyWidget::onPushButton_3_clicked()
 {
     for (int i(0);i<4;i++)
     ui->graph->graph(i)->clearData();
@@ -72,7 +73,7 @@ void MyWidget::on_pushButton_3_clicked()
     number_graph=0;
 }
 
-void MyWidget::on_pushButton_4_clicked()
+void MyWidget::onPushButton_4_clicked()
 {
     //generate some data
     QVector<double> x1(101), y1(101); //Инициализируем два вектора по 101-у элементу
@@ -97,16 +98,16 @@ void MyWidget::on_pushButton_4_clicked()
     ui->graph->replot();
 }
 
-void MyWidget::on_dial_valueChanged()
+void MyWidget::onDial_valueChanged()
 {
-   /* double x;
-    x=(ui->dial->value())*0.01;
-    QVector<double> x2(101), y2(101);
-    for (int i=0;i<101;++i)
-    {
-        x2[i]=i/50.0-1; // x в диапазоне от -1 до 1
-        y2[i]=x;
-    }*/
+    //double x;
+    //x=(ui->dial->value())*0.01;
+    //QVector<double> x2(101), y2(101);
+    //for (int i=0;i<101;++i)
+    //{
+    //    x2[i]=i/50.0-1; // x в диапазоне от -1 до 1
+    //    y2[i]=x;
+    //}
     double Limit;
     int shet=0;
     Limit=(ui->dial->value())*0.01;
@@ -122,9 +123,9 @@ void MyWidget::on_dial_valueChanged()
      ui->graph->addGraph();
      ui->graph->graph(1)->setData(x_red,y_red);
      ui->graph->graph(1)->setPen(QPen(Qt::red));
-    /*ui->graph->addGraph();
-    ui->graph->graph(3)->setData(x2,y2);
-    ui->graph->replot();
-    */
+    //ui->graph->addGraph();
+    //ui->graph->graph(3)->setData(x2,y2);
+    //ui->graph->replot();
+
 
 }
