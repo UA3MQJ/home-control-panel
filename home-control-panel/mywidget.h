@@ -14,7 +14,7 @@ class MyWidget : public QWidget
 public:
     explicit MyWidget(QWidget *parent = 0);
     ~MyWidget();
-    QVector<double> x,y,x_red,y_red; //Инициализируем четыре вектора
+
 
 private slots:
     void onPushButton_2_clicked();

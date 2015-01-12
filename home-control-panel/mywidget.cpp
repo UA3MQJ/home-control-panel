@@ -1,6 +1,5 @@
 #include "mywidget.h"
 #include "ui_mywidget.h"
-int number_graph=0;
 
 MyWidget::MyWidget(QWidget *parent) :
     QWidget(parent),
@@ -10,8 +9,13 @@ MyWidget::MyWidget(QWidget *parent) :
     connect(ui->pushButton_2,SIGNAL(clicked()),SLOT(onPushButton_2_clicked()));
     connect(ui->pushButton_3,SIGNAL(clicked()),SLOT(onPushButton_3_clicked()));
     connect(ui->pushButton_4,SIGNAL(clicked()),SLOT(onPushButton_4_clicked()));
-    connect(ui->dial,SIGNAL(valueChanged()),SLOT(on_dial_valueChanged()));
-    connect(ui->dial,SIGNAL(valueChanged()),SLOT(on_pushButton_2_clicked()));
+    connect(ui->dial,SIGNAL(valueChanged()),SLOT(onDial_valueChanged()));
+    connect(ui->dial,SIGNAL(valueChanged()),SLOT(on_PushButton_2_clicked()));
+    for (int i=0;i<4;i++)
+    {
+    ui->graph->addGraph();
+    }
+
 }
 
 MyWidget::~MyWidget()
@@ -24,14 +28,14 @@ MyWidget::~MyWidget()
 void MyWidget::onPushButton_2_clicked()
 {
     //generate some data
-
+    QVector<double> x(101),y(101),x_red,y_red; //Инициализируем четыре вектора
    double Limit;
    int shet=0;
    Limit=(ui->dial->value())*0.01;
     for (int i=0;i<101;++i)
     {
-        x.append(i/50.0-1); // x в диапазоне от 0 до 1
-        y.append(x[i]*x[i]);
+        x[i]=i/50.0-1; // x в диапазоне от 0 до 1
+        y[i]=x[i]*x[i];
       if (y[i]>Limit)
         {
         y_red.append(y[i]);
@@ -41,17 +45,15 @@ void MyWidget::onPushButton_2_clicked()
     }
 
     //Создаем график и данные для него
-    ui->graph->addGraph();
+    //ui->graph->addGraph();
     ui->graph->graph(0)->setData(x,y);
-    number_graph=number_graph+1;
-    //if(shet!=0){
-    //    ui->graph->addGraph();
-    //    ui->graph->graph(1)->setData(x_red,y_red);
-    //    ui->graph->graph(1)->setPen(QPen(Qt::red));
-    //    //ui->graph->graph(1)->setPen(QColor(50,50,50,255));
-    //    //ui->graph->graph(1)->setLineStyle(QCPGraph::lsNone);
-    //    //ui->graph->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle,4));
-    //}
+      if(shet!=0)
+    {
+        //ui->graph->addGraph();
+        ui->graph->graph(1)->setData(x_red,y_red);
+        ui->graph->graph(1)->setPen(QPen(Qt::red));
+
+    }
 
        //помещаем метки на оси
     ui->graph->xAxis->setLabel("x");
@@ -70,7 +72,6 @@ void MyWidget::onPushButton_3_clicked()
     for (int i(0);i<4;i++)
     ui->graph->graph(i)->clearData();
     ui->graph->replot();
-    number_graph=0;
 }
 
 void MyWidget::onPushButton_4_clicked()
@@ -84,15 +85,14 @@ void MyWidget::onPushButton_4_clicked()
         y1[i]=2*x1[i]*x1[i];
     }
     //Создаем график и данные для него
-    ui->graph->addGraph();
+    //ui->graph->addGraph();
     ui->graph->graph(2)->setData(x1,y1);
-        ui->graph->xAxis->setLabel("x");
+    ui->graph->xAxis->setLabel("x");
     ui->graph->yAxis->setLabel("y");
     ui->graph->graph(2)->setPen(QPen(Qt::green));
     ui->graph->graph(2)->setBrush(QBrush(QColor(0,19,236,17)));
     ui->graph->graph(2)->setLineStyle(QCPGraph::lsLine);
     ui->graph->graph(2)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDot,1));
-    number_graph=number_graph+1;
     ui->graph->xAxis->setRange(-1,1);
     ui->graph->yAxis->setRange(0,1);
     ui->graph->replot();
@@ -100,32 +100,17 @@ void MyWidget::onPushButton_4_clicked()
 
 void MyWidget::onDial_valueChanged()
 {
-    //double x;
-    //x=(ui->dial->value())*0.01;
-    //QVector<double> x2(101), y2(101);
-    //for (int i=0;i<101;++i)
-    //{
-    //    x2[i]=i/50.0-1; // x в диапазоне от -1 до 1
-    //    y2[i]=x;
-    //}
-    double Limit;
-    int shet=0;
-    Limit=(ui->dial->value())*0.01;
-     for (int i=0;i<101;++i)
-     {
-       if (y[i]>Limit)
-         {
-         y_red.append(y[i]);
-         x_red.append(x[i]);
-         shet++;
-         }
-     }
-     ui->graph->addGraph();
-     ui->graph->graph(1)->setData(x_red,y_red);
-     ui->graph->graph(1)->setPen(QPen(Qt::red));
-    //ui->graph->addGraph();
-    //ui->graph->graph(3)->setData(x2,y2);
-    //ui->graph->replot();
+    double x;
+    x=(ui->dial->value())*0.01;
+    QVector<double> x2(101), y2(101);
+    for (int i=0;i<101;++i)
+    {
+        x2[i]=i/50.0-1; // x в диапазоне от -1 до 1
+        y2[i]=x;
+    }
+
+    ui->graph->graph(3)->setData(x2,y2);
+    ui->graph->replot();
 
 
 }
