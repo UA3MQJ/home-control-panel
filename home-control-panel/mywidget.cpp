@@ -9,8 +9,8 @@ MyWidget::MyWidget(QWidget *parent) :
     connect(ui->pushButton_2,SIGNAL(clicked()),SLOT(onPushButton_2_clicked()));
     connect(ui->pushButton_3,SIGNAL(clicked()),SLOT(onPushButton_3_clicked()));
     connect(ui->pushButton_4,SIGNAL(clicked()),SLOT(onPushButton_4_clicked()));
-    connect(ui->dial,SIGNAL(valueChanged()),SLOT(onDial_valueChanged()));
-    connect(ui->dial,SIGNAL(valueChanged()),SLOT(on_PushButton_2_clicked()));
+    connect(ui->dial,SIGNAL(valueChanged(int)),SLOT(onDial_valueChanged()));
+    connect(ui->dial,SIGNAL(valueChanged(int)),SLOT(onPushButton_2_clicked()));
     for (int i=0;i<4;i++)
     {
     ui->graph->addGraph();
