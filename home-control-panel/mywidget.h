@@ -2,6 +2,10 @@
 #define MYWIDGET_H
 
 #include <QWidget>
+/* Добавляем заголовочные файлы для работы с таймером и UDP портом */
+#include <QTimer>
+#include <QUdpSocket>
+
 
 namespace Ui {
 class MyWidget;
@@ -21,9 +25,15 @@ private slots:
     void onPushButton_3_clicked();
     void onPushButton_4_clicked();
     void onDial_valueChanged();
+    void onDial_valueChanged1();
+    /* Добавляем слоты для приема/передачи датаграмм */
+   // void onMyTimerTimeout();
+  //  void onReadyRead();
 
 private:
     Ui::MyWidget *ui;
+    //QTimer *myTimer;
+    //QUdpSocket *soket;
 
 
 
