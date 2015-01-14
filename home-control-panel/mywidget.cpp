@@ -7,19 +7,32 @@
 */
 #include "mywidget.h"
 #include "ui_mywidget.h"
+#include <QDebug>
 
 MyWidget::MyWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MyWidget)
 {
     ui->setupUi(this);
+
+    /*в данном блоке  добавляем работу с сетью*/
+   /* socket = new QUdpSocket(this);
+    connect(socket,SIGNAL(readyRead()),SLOT(onReadyRead()));
+    socket->bind(55000);
+
+    myTimer = new QTimer(this);
+    connect(myTimer,SIGNAL(timeout()),SLOT(onMyTimerTimeout()));
+    myTimer->start(5000);
+    /****************************/
+
+    ui->dial_2->setDisabled(true);
     connect(ui->pushButton_2,SIGNAL(clicked()),SLOT(onPushButton_2_clicked()));//при нажатии кнопки рисуем график 1
     connect(ui->pushButton_3,SIGNAL(clicked()),SLOT(onPushButton_3_clicked()));//при нажатии кнопки рисуем график 2
     connect(ui->pushButton_4,SIGNAL(clicked()),SLOT(onPushButton_4_clicked()));// очищаем координатную сетку от всех графиков
     connect(ui->dial,SIGNAL(valueChanged(int)),SLOT(onDial_valueChanged())); // рисуем линию от крутилки 1
     connect(ui->dial,SIGNAL(valueChanged(int)),SLOT(onPushButton_2_clicked())); //подрезаем график 1 по значению крутилки 1
     connect(ui->dial,SIGNAL(valueChanged(int)),SLOT(onDial_valueChanged1())); //в соответствии с положением крутилки
-    connect(ui->dial_2,SIGNAL(valueChanged(int)),SLOT(onDial_valueChanged2())); // рисуем линию от крутилки 1
+    connect(ui->dial_2,SIGNAL(valueChanged(int)),SLOT(onDial_valueChanged2())); // рисуем горизонтальную линию от крутилки 2
     connect(ui->dial_2,SIGNAL(valueChanged(int)),SLOT(onPushButton_2_clicked())); //подрезаем график 1 по значению крутилки 1
     connect(ui->dial_2,SIGNAL(valueChanged(int)),SLOT(onDial_valueChanged3())); //в соответствии с положением крутилки 2
 
@@ -34,7 +47,27 @@ MyWidget::~MyWidget()
 {
     delete ui;
 }
+/*
+//Слот для отправки датаграммы по сети после исполнения таймаута
+void MyWidget::onMyTimerTimeout()
+{
+    ui->textEdit->insertPlainText("On Timer\n");
+    QByteArray datagram="$T25252525252500000014200000252525252525252525252525025";
+    QDebug()<<"SEND"<<datagram.toHex();
+    socket->writeDatagram(datargam,QHostAdress("192.168.20.60"),10001);
+}
 
+// Слот для получения датаграммы от МК
+void MyWidget::onReadyRead()
+{
+    qDebug()<<"onReadyReady()";
+    QByteArray buffer;
+    buffer.resize(socket->pendingDatagramSize());
+    socket->readDatagram(buffer.data(),buffer.size());
+
+    qDebug()<<buffer.toHex();
+}
+*/
 
 //Слот для создания графика при нажатии на кнопку
 void MyWidget::onPushButton_2_clicked()
@@ -92,6 +125,7 @@ void MyWidget::onPushButton_2_clicked()
     ui->graph->replot();
 }
 
+//Слод ля очистки координатной плоскости от графиков
 void MyWidget::onPushButton_3_clicked()
 {
     for (int i(0);i<5;i++)
@@ -99,7 +133,8 @@ void MyWidget::onPushButton_3_clicked()
     ui->graph->replot();
 }
 
-void MyWidget::onPushButton_4_clicked() //данный график пока просто для опытов прикрутили
+//данный график пока просто для опытов прикрутили
+void MyWidget::onPushButton_4_clicked()
 {
     //generate some data
     QVector<double> x1(101), y1(101); //Инициализируем два вектора по 101-у элементу
@@ -117,15 +152,21 @@ void MyWidget::onPushButton_4_clicked() //данный график пока п�
     ui->graph->graph(2)->setPen(QPen(Qt::green));
     ui->graph->graph(2)->setBrush(QBrush(QColor(0,19,236,17)));
     ui->graph->graph(2)->setLineStyle(QCPGraph::lsLine);
-    ui->graph->graph(2)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDot,1));
+    ui->graph->graph(2)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDot,4));
     ui->graph->xAxis->setRange(-1,1);
     ui->graph->yAxis->setRange(0,1);
+    ui->graph->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
     ui->graph->replot();
 }
 
 // в данном слоте обрабатываем крутилку 1 на рисование верхней границы
 void MyWidget::onDial_valueChanged()
 {
+    if((ui->dial->value())!=0)
+        ui->dial_2->setEnabled(true);
+    else
+        ui->dial_2->setEnabled(false);
+    ui->dial->setMinimum(ui->dial_2->value());
     double x;
     x=(ui->dial->value())*0.01;
     QVector<double> x2(101), y2(101);//криво и расточительно рисуем линию :)
@@ -139,6 +180,7 @@ void MyWidget::onDial_valueChanged()
     ui->graph->graph(3)->setPen(QPen(Qt::red));
     ui->graph->replot();
 }
+
 // в данном слоте обрабатываем крутилку 1 на изменение значения в метке под крутилкой
 void MyWidget::onDial_valueChanged1()
 {
@@ -148,6 +190,7 @@ void MyWidget::onDial_valueChanged1()
 // в данном слоте обрабатываем крутилку 2 на рисование нижней границы
 void MyWidget::onDial_valueChanged2()
 {
+    ui->dial_2->setMaximum(ui->dial->value());
     double x;
     x=(ui->dial_2->value())*0.01;
     QVector<double> x2(101), y2(101);//криво и расточительно рисуем вторую линию :)
@@ -161,6 +204,7 @@ void MyWidget::onDial_valueChanged2()
     ui->graph->graph(4)->setPen(QPen(Qt::green));
     ui->graph->replot();
 }
+
 // в данном слоте обрабатываем крутилку 2 на изменение значения в метке под крутилкой
 void MyWidget::onDial_valueChanged3()
 {
