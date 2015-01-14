@@ -24,8 +24,17 @@ private slots:
     void onPushButton_2_clicked();
     void onPushButton_3_clicked();
     void onPushButton_4_clicked();
+    /*Слоты для первой крутилки на изменение графика и текстовой метки*/
     void onDial_valueChanged();
     void onDial_valueChanged1();
+    /*******************************/
+
+    /*Слоты для первой крутилки на изменение графика и текстовой метки*/
+    void onDial_valueChanged2();
+    void onDial_valueChanged3();
+    /*******************************/
+
+
     /* Добавляем слоты для приема/передачи датаграмм */
    // void onMyTimerTimeout();
   //  void onReadyRead();
