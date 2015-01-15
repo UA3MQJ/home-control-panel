@@ -45,7 +45,6 @@ private:
     //QUdpSocket *soket;
 
 
-
 };
 
 #endif // MYWIDGET_H

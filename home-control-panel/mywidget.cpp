@@ -9,6 +9,9 @@
 #include "ui_mywidget.h"
 #include <QDebug>
 
+
+QByteArray datagram="$T25252525252500000014200000252525252525252525252525025"; //Создаем датаграмму для отправки в МК
+
 MyWidget::MyWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MyWidget)
@@ -23,7 +26,7 @@ MyWidget::MyWidget(QWidget *parent) :
     myTimer = new QTimer(this);
     connect(myTimer,SIGNAL(timeout()),SLOT(onMyTimerTimeout()));
     myTimer->start(5000);
-    /****************************/
+   */
 
     ui->dial_2->setDisabled(true);
     connect(ui->pushButton_2,SIGNAL(clicked()),SLOT(onPushButton_2_clicked()));//при нажатии кнопки рисуем график 1
@@ -41,7 +44,7 @@ MyWidget::MyWidget(QWidget *parent) :
     ui->graph->addGraph();//добавляем 4 графика но не отрисовываем их пока и не задаеи значений точкам этих графиков
     }
 
-}
+    }
 
 MyWidget::~MyWidget()
 {
@@ -52,7 +55,7 @@ MyWidget::~MyWidget()
 void MyWidget::onMyTimerTimeout()
 {
     ui->textEdit->insertPlainText("On Timer\n");
-    QByteArray datagram="$T25252525252500000014200000252525252525252525252525025";
+
     QDebug()<<"SEND"<<datagram.toHex();
     socket->writeDatagram(datargam,QHostAdress("192.168.20.60"),10001);
 }
@@ -167,6 +170,9 @@ void MyWidget::onDial_valueChanged()
     else
         ui->dial_2->setEnabled(false);
     ui->dial->setMinimum(ui->dial_2->value());
+
+
+
     double x;
     x=(ui->dial->value())*0.01;
     QVector<double> x2(101), y2(101);//криво и расточительно рисуем линию :)
@@ -184,7 +190,13 @@ void MyWidget::onDial_valueChanged()
 // в данном слоте обрабатываем крутилку 1 на изменение значения в метке под крутилкой
 void MyWidget::onDial_valueChanged1()
 {
+
+    QByteArray data_dial;
     ui->label_dial->setText(QString::number(ui->dial->value()));
+    data_dial=QByteArray::number((ui->dial->value()));
+    datagram[2]=data_dial[0];
+    datagram[3]=data_dial[1];
+    ui->textEdit->setText(datagram);
 }
 
 // в данном слоте обрабатываем крутилку 2 на рисование нижней границы
@@ -208,5 +220,10 @@ void MyWidget::onDial_valueChanged2()
 // в данном слоте обрабатываем крутилку 2 на изменение значения в метке под крутилкой
 void MyWidget::onDial_valueChanged3()
 {
+    QByteArray data_dial;
     ui->label_dial2->setText(QString::number(ui->dial_2->value()));
+    data_dial=QByteArray::number((ui->dial_2->value()));
+    datagram[4]=data_dial[0];
+    datagram[5]=data_dial[1];
+    ui->textEdit->setText(datagram);
 }

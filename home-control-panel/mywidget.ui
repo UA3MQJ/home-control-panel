@@ -255,14 +255,17 @@
      <property name="acceptDrops">
       <bool>true</bool>
      </property>
+     <property name="minimum">
+      <number>10</number>
+     </property>
      <property name="maximum">
-      <number>100</number>
+      <number>95</number>
      </property>
      <property name="singleStep">
       <number>1</number>
      </property>
      <property name="value">
-      <number>0</number>
+      <number>10</number>
      </property>
      <property name="tracking">
       <bool>true</bool>
@@ -308,8 +311,11 @@
        <height>64</height>
       </rect>
      </property>
+     <property name="minimum">
+      <number>10</number>
+     </property>
      <property name="maximum">
-      <number>100</number>
+      <number>95</number>
      </property>
      <property name="notchTarget">
       <double>5.000000000000000</double>
@@ -400,6 +406,19 @@
        <width>561</width>
        <height>41</height>
       </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>100</y>
+       <width>211</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Строка, которую отправляем в МК</string>
      </property>
     </widget>
    </widget>
