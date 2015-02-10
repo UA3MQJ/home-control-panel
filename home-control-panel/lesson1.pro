@@ -14,9 +14,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mywidget.cpp \
-    qcustomplot.cpp
+    qcustomplot.cpp \
+    qcustomplot2.cpp
 
 HEADERS  += mywidget.h \
-    qcustomplot.h
+    qcustomplot.h \
+    qcustomplot2.h
 
 FORMS    += mywidget.ui

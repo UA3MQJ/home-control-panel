@@ -194,7 +194,7 @@
     <attribute name="title">
      <string>Tab 2</string>
     </attribute>
-    <widget class="QCustomPlot" name="graph" native="true">
+    <widget class="QCustomPlot2" name="graph" native="true">
      <property name="geometry">
       <rect>
        <x>120</x>
@@ -432,9 +432,9 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>QCustomPlot</class>
+   <class>QCustomPlot2</class>
    <extends>QWidget</extends>
-   <header>qcustomplot.h</header>
+   <header>qcustomplot2.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
